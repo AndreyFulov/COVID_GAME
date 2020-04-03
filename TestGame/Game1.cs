@@ -8,6 +8,7 @@ namespace TestGame
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+    /// 
     public class Game1 : Game
     {
         Random rnd = new Random();
@@ -20,11 +21,14 @@ namespace TestGame
         Citizen citizen1;
         Citizen[] citizens;
 
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
+        //Курсор
+        MouseCursor cursor = new MouseCursor();
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -35,6 +39,12 @@ namespace TestGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            graphics.ToggleFullScreen();
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.ApplyChanges();
+            cursor.SetPos(new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2));
+
             doctorPosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
             doctorSpeed = 100f;
             citizen1 = new Citizen();
@@ -45,7 +55,6 @@ namespace TestGame
                 citizens[i] = new Citizen();
                 citizens[i].SetPos(new Vector2(rnd.Next(0, graphics.PreferredBackBufferWidth), rnd.Next(0, graphics.PreferredBackBufferHeight)));
             }
-
 
             base.Initialize();
         }
@@ -58,8 +67,10 @@ namespace TestGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            
             // TODO: use this.Content to load your game content here
+
+            cursor.SetTexture(Content.Load<Texture2D>("cursor"));
             doctorTexture = Content.Load<Texture2D>("doctor");
 
             citizen1.SetTexture(Content.Load<Texture2D>("citizen"));
@@ -89,6 +100,10 @@ namespace TestGame
                 Exit();
 
             // TODO: Add your update logic here
+            var mstate = Mouse.GetState();
+            cursor.SetPos(mstate.Position.ToVector2());
+
+
             var kstate = Keyboard.GetState();
             if(kstate.IsKeyDown(Keys.W))
             {
@@ -134,6 +149,11 @@ namespace TestGame
             {
                 spriteBatch.Draw(citizens[i].GetTexture(), citizens[i].GetPos(), Color.White);
             }
+
+
+            //ВСЕГДА ПОСЛЕДНИМ!!!
+            spriteBatch.Draw(cursor.GetTexture(), cursor.GetPos(), Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
