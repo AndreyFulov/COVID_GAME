@@ -13,7 +13,7 @@ namespace TestGame
     {
         Random rnd = new Random();
 
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D doctorTexture;
         Vector2 doctorPosition;
@@ -39,10 +39,6 @@ namespace TestGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            graphics.ToggleFullScreen();
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.ApplyChanges();
             cursor.SetPos(new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2));
 
             doctorPosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
